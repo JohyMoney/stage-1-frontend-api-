@@ -1,49 +1,59 @@
-const BASE_URL = 'https://content.guardianapis.com/search'
-const API_KEY = import.meta.env.VITE_GUARDIAN_API_KEY || 'test'
+const NEWS_API_BASE_URL = import.meta.env.PROD
+  ? 'https://nomoreparties.co/news/v2/everything'
+  : 'https://newsapi.org/v2/everything'
+
+const API_KEY = import.meta.env.VITE_NEWS_API_KEY || ''
+
+function formatApiDate(date) {
+  return date.toISOString().slice(0, 10)
+}
 
 function toArticle(item, fallbackKeyword) {
-  const fields = item.fields || {}
-
   return {
-    id: item.id,
+    id: item.url,
     keyword: fallbackKeyword,
-    title: fields.headline || item.webTitle || 'Untitled article',
-    description: fields.trailText || 'No description provided.',
-    date: new Date(item.webPublicationDate).toLocaleDateString('en-US', {
+    title: item.title || 'Untitled article',
+    description: item.description || 'No description provided.',
+    date: new Date(item.publishedAt).toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',
       year: 'numeric',
     }),
-    source: 'The Guardian',
-    image:
-      fields.thumbnail ||
-      'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=900&q=80',
-    url: item.webUrl,
+    source: item.source?.name || 'Unknown source',
+    image: item.urlToImage || '/images/news-1.jpg',
+    url: item.url,
   }
 }
 
 export async function searchNews(query) {
   const keyword = query.trim()
-
   if (!keyword) {
     return []
   }
 
+  const now = new Date()
+  const sevenDaysAgo = new Date(now)
+  sevenDaysAgo.setDate(now.getDate() - 7)
+
   const params = new URLSearchParams({
     q: keyword,
-    'api-key': API_KEY,
-    'page-size': '30',
-    'show-fields': 'headline,trailText,thumbnail',
+    apiKey: API_KEY,
+    from: formatApiDate(sevenDaysAgo),
+    to: formatApiDate(now),
+    pageSize: '100',
   })
 
-  const response = await fetch(`${BASE_URL}?${params.toString()}`)
+  const response = await fetch(`${NEWS_API_BASE_URL}?${params.toString()}`)
 
   if (!response.ok) {
     throw new Error(`Request failed with status ${response.status}`)
   }
 
   const payload = await response.json()
-  const results = payload?.response?.results || []
+  if (payload?.status !== 'ok') {
+    throw new Error(payload?.message || 'News API request failed.')
+  }
 
+  const results = payload?.articles || []
   return results.map((item) => toArticle(item, keyword))
 }

@@ -17,10 +17,12 @@ Frontend for Stage 1 (frontend + API integration) built with React and Vite.
 
 ## API
 
-- Service: The Guardian Content API
+- Service: News API
 - Utility: [src/utils/NewsApi.js](src/utils/NewsApi.js)
+- Endpoint in development: https://newsapi.org/v2/everything
+- Endpoint in production: https://nomoreparties.co/news/v2/everything
 - Environment variables:
-  - VITE_GUARDIAN_API_KEY
+  - VITE_NEWS_API_KEY
   - VITE_BASE_PATH
 
 Copy [.env.example](.env.example) to .env and set values if needed.

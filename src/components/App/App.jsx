@@ -4,6 +4,7 @@ import HomePage from '../../pages/HomePage.jsx'
 import SavedNewsPage from '../../pages/SavedNewsPage.jsx'
 import LoginModal from '../LoginModal/LoginModal.jsx'
 import RegisterModal from '../RegisterModal/RegisterModal.jsx'
+import { searchNews } from '../../utils/NewsApi.js'
 import { getToken, getUserByToken, login, logout, register } from '../../utils/AuthApi.js'
 import {
   deleteArticle,
@@ -12,11 +13,21 @@ import {
 } from '../../utils/SavedArticlesApi.js'
 import './App.css'
 
+const REQUEST_ERROR_MESSAGE =
+  'Sorry, something went wrong during the request. Please try again later.'
+
+const CARDS_PER_BATCH = 3
+
 function App() {
   const [activeModal, setActiveModal] = useState('')
   const [currentUser, setCurrentUser] = useState(null)
   const [savedArticles, setSavedArticles] = useState([])
   const [authError, setAuthError] = useState('')
+  const [articles, setArticles] = useState([])
+  const [cardsVisible, setCardsVisible] = useState(CARDS_PER_BATCH)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasSearched, setHasSearched] = useState(false)
+  const [searchError, setSearchError] = useState('')
 
   const openLoginModal = () => {
     setAuthError('')
@@ -116,6 +127,34 @@ function App() {
     }
   }
 
+  const handleSearch = async (value) => {
+    const query = value.trim()
+    setHasSearched(true)
+    setCardsVisible(CARDS_PER_BATCH)
+    setSearchError('')
+
+    if (!query) {
+      setArticles([])
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const results = await searchNews(query)
+      setArticles(results)
+    } catch {
+      setSearchError(REQUEST_ERROR_MESSAGE)
+      setArticles([])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleShowMore = () => {
+    setCardsVisible((prev) => prev + CARDS_PER_BATCH)
+  }
+
   return (
     <div className="app">
       <Routes>
@@ -130,6 +169,13 @@ function App() {
               currentUser={currentUser}
               savedArticles={savedArticles}
               onToggleSave={handleToggleSave}
+              articles={articles}
+              cardsVisible={cardsVisible}
+              isLoading={isLoading}
+              hasSearched={hasSearched}
+              searchError={searchError}
+              onSearch={handleSearch}
+              onShowMore={handleShowMore}
             />
           }
         />
