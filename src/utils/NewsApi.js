@@ -20,7 +20,7 @@ function toArticle(item, fallbackKeyword) {
       year: 'numeric',
     }),
     source: item.source?.name || 'Unknown source',
-    image: item.urlToImage || '/images/news-1.jpg',
+    image: item.urlToImage || '/images/news-1.png',
     url: item.url,
   }
 }
