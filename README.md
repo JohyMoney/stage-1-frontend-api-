@@ -65,7 +65,7 @@ Copy [.env.example](.env.example) to .env and set values if needed.
 ## links for the project
 github: https://github.com/JohyMoney/stage-1-frontend-api-
 
-frontend: 
+frontend: http://localhost:5173/
 
 backend: http://localhost:3000
 
