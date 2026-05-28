@@ -1,13 +1,20 @@
+import { useMemo, useState } from 'react'
 import ModalWithForm from '../ModalWithForm/ModalWithForm.jsx'
 
 function LoginModal({ isOpen, onClose, onSwitchToRegister, onSubmit, errorMessage }) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const isSubmitDisabled = useMemo(() => {
+    return !email.trim() || !password.trim()
+  }, [email, password])
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
 
     onSubmit({
-      email: formData.get('email')?.toString().trim() || '',
-      password: formData.get('password')?.toString() || '',
+      email: email.trim(),
+      password,
     })
   }
 
@@ -19,6 +26,7 @@ function LoginModal({ isOpen, onClose, onSwitchToRegister, onSubmit, errorMessag
       submitText="Sign in"
       onSubmit={handleSubmit}
       errorMessage={errorMessage}
+      isSubmitDisabled={isSubmitDisabled}
       footer={
         <p className="modal__footer">
           or{' '}
@@ -40,6 +48,8 @@ function LoginModal({ isOpen, onClose, onSwitchToRegister, onSubmit, errorMessag
           className="modal__input"
           type="email"
           placeholder="Enter email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
           required
         />
       </label>
@@ -51,6 +61,8 @@ function LoginModal({ isOpen, onClose, onSwitchToRegister, onSubmit, errorMessag
           className="modal__input"
           type="password"
           placeholder="Enter password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
           required
         />
       </label>

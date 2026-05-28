@@ -21,6 +21,19 @@
   line-height: 1.5;
 }
 
+.main__empty {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 12px 0 20px;
+}
+
+.main__empty-image {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
 .main__show-more {
   margin-top: 28px;
   border: 0;

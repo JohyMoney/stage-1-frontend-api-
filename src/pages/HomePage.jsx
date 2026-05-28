@@ -10,7 +10,6 @@ function HomePage({
   onRegisterClick,
   onLogoutClick,
   isLoggedIn,
-  currentUser,
   savedArticles,
   onToggleSave,
   articles,
@@ -46,7 +45,6 @@ function HomePage({
         onRegisterClick={onRegisterClick}
         onLogoutClick={onLogoutClick}
         isLoggedIn={isLoggedIn}
-        currentUser={currentUser}
       >
         <SearchForm onSearch={onSearch} />
       </Header>

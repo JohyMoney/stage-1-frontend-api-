@@ -1,14 +1,22 @@
+import { useMemo, useState } from 'react'
 import ModalWithForm from '../ModalWithForm/ModalWithForm.jsx'
 
 function RegisterModal({ isOpen, onClose, onSwitchToLogin, onSubmit, errorMessage }) {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+
+  const isSubmitDisabled = useMemo(() => {
+    return !email.trim() || !password.trim() || !name.trim()
+  }, [email, password, name])
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
 
     onSubmit({
-      email: formData.get('email')?.toString().trim() || '',
-      password: formData.get('password')?.toString() || '',
-      name: formData.get('name')?.toString().trim() || '',
+      email: email.trim(),
+      password,
+      name: name.trim(),
     })
   }
 
@@ -20,6 +28,7 @@ function RegisterModal({ isOpen, onClose, onSwitchToLogin, onSubmit, errorMessag
       submitText="Sign up"
       onSubmit={handleSubmit}
       errorMessage={errorMessage}
+      isSubmitDisabled={isSubmitDisabled}
       footer={
         <p className="modal__footer">
           or{' '}
@@ -37,6 +46,8 @@ function RegisterModal({ isOpen, onClose, onSwitchToLogin, onSubmit, errorMessag
           className="modal__input"
           type="email"
           placeholder="Enter email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
           required
         />
       </label>
@@ -48,6 +59,8 @@ function RegisterModal({ isOpen, onClose, onSwitchToLogin, onSubmit, errorMessag
           className="modal__input"
           type="password"
           placeholder="Create password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
           required
         />
       </label>
@@ -59,6 +72,8 @@ function RegisterModal({ isOpen, onClose, onSwitchToLogin, onSubmit, errorMessag
           className="modal__input"
           type="text"
           placeholder="Enter username"
+          value={name}
+          onChange={(event) => setName(event.target.value)}
           required
         />
       </label>

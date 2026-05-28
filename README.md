@@ -61,3 +61,15 @@ Copy [.env.example](.env.example) to .env and set values if needed.
 - Response handling: implemented in [src/pages/HomePage.jsx](src/pages/HomePage.jsx) and [src/components/Main/Main.jsx](src/components/Main/Main.jsx)
 - Backend simulation: implemented in [src/utils/AuthApi.js](src/utils/AuthApi.js) and [src/utils/SavedArticlesApi.js](src/utils/SavedArticlesApi.js)
 - Deployment setup: implemented in [package.json](package.json) and [vite.config.js](vite.config.js)
+
+## links for the project
+github: https://github.com/JohyMoney/stage-1-frontend-api-
+
+frontend: 
+
+backend: http://localhost:3000
+
+pull request (stage-1-frontend-and-api -> main):
+https://github.com/JohyMoney/stage-1-frontend-api-/compare/main...stage-1-frontend-and-api?expand=1
+
+youtube:

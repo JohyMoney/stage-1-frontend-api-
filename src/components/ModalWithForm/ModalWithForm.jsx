@@ -10,6 +10,7 @@ function ModalWithForm({
   footer,
   onSubmit,
   errorMessage,
+  isSubmitDisabled,
 }) {
   useEffect(() => {
     if (!isOpen) {
@@ -40,7 +41,7 @@ function ModalWithForm({
         <form className="modal__form" onSubmit={onSubmit}>
           {children}
           {errorMessage && <p className="modal__error">{errorMessage}</p>}
-          <button className="modal__submit" type="submit">
+          <button className="modal__submit" type="submit" disabled={isSubmitDisabled}>
             {submitText}
           </button>
         </form>

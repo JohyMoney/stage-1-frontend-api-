@@ -9,7 +9,6 @@ function Header({
   onRegisterClick,
   onLogoutClick,
   isLoggedIn,
-  currentUser,
 }) {
   return (
     <header className="header content-section">
@@ -18,7 +17,6 @@ function Header({
         onRegisterClick={onRegisterClick}
         onLogoutClick={onLogoutClick}
         isLoggedIn={isLoggedIn}
-        currentUser={currentUser}
       />
       <div className="header__content">
         <p className="header__title">{title}</p>

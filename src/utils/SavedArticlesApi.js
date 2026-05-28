@@ -1,4 +1,23 @@
 const SAVED_KEY = 'newsexplorer_saved_articles'
+const IMAGE_BASE = `${import.meta.env.BASE_URL}images`
+const FALLBACK_SAVED_IMAGES = [
+  `${IMAGE_BASE}/saved-1.png`,
+  `${IMAGE_BASE}/saved-2.png`,
+]
+
+function normalizeSavedArticle(item, index) {
+  const fallbackImage = FALLBACK_SAVED_IMAGES[index % FALLBACK_SAVED_IMAGES.length]
+
+  return {
+    ...item,
+    image:
+      item.image && item.image.trim()
+        ? item.image.startsWith('/images/')
+          ? `${IMAGE_BASE}/${item.image.split('/').pop()}`
+          : item.image
+        : fallbackImage,
+  }
+}
 
 function withDelay(value, shouldReject = false) {
   return new Promise((resolve, reject) => {
@@ -32,7 +51,9 @@ function writeSaved(items) {
 }
 
 export async function getSavedArticles(userId) {
-  const items = readSaved().filter((item) => item.ownerId === userId)
+  const items = readSaved()
+    .filter((item) => item.ownerId === userId)
+    .map((item, index) => normalizeSavedArticle(item, index))
   return withDelay(items)
 }
 
@@ -51,6 +72,10 @@ export async function saveArticle(article, userId) {
     id: `saved-${Date.now()}`,
     ownerId: userId,
     originalUrl: article.url,
+    image:
+      article.image && article.image.trim()
+        ? article.image
+        : FALLBACK_SAVED_IMAGES[allItems.length % FALLBACK_SAVED_IMAGES.length],
   }
 
   allItems.push(savedItem)

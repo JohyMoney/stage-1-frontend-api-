@@ -1,3 +1,5 @@
+const IMAGE_BASE = `${import.meta.env.BASE_URL}images`
+
 export const mockArticles = [
   {
     id: '1',
@@ -7,7 +9,7 @@ export const mockArticles = [
       'Urban research labs presented a joint roadmap to reduce flooding and heat risk in the next 10 years.',
     date: 'May 25, 2026',
     source: 'Global Brief',
-    image: '/images/news-1.png',
+    image: `${IMAGE_BASE}/news-1.png`,
   },
   {
     id: '2',
@@ -17,7 +19,7 @@ export const mockArticles = [
       'Municipal APIs are helping independent developers build traffic tools with lower commute times.',
     date: 'May 26, 2026',
     source: 'Metro Tech',
-    image: '/images/news-2.png',
+    image: `${IMAGE_BASE}/news-2.png`,
   },
   {
     id: '3',
@@ -27,7 +29,7 @@ export const mockArticles = [
       'A regional pilot improved early screenings and reduced emergency visits across five neighborhoods.',
     date: 'May 27, 2026',
     source: 'Public Health Wire',
-    image: '/images/news-3.png',
+    image: `${IMAGE_BASE}/news-3.png`,
   },
 ]
 
@@ -40,7 +42,7 @@ export const savedArticles = [
       'A new monitoring program reported encouraging biodiversity growth in restored reef zones.',
     date: 'May 23, 2026',
     source: 'Ocean Today',
-    image: '/images/saved-1.png',
+    image: `${IMAGE_BASE}/saved-1.png`,
   },
   {
     id: '5',
@@ -50,6 +52,6 @@ export const savedArticles = [
       'Neighborhood reading clubs and hybrid events are driving year-over-year sales improvements.',
     date: 'May 22, 2026',
     source: 'City Journal',
-    image: '/images/saved-2.png',
+    image: `${IMAGE_BASE}/saved-2.png`,
   },
 ]

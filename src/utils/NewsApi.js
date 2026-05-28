@@ -3,6 +3,7 @@ const NEWS_API_BASE_URL = import.meta.env.PROD
   : 'https://newsapi.org/v2/everything'
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY || ''
+const IMAGE_BASE = `${import.meta.env.BASE_URL}images`
 
 function formatApiDate(date) {
   return date.toISOString().slice(0, 10)
@@ -20,7 +21,7 @@ function toArticle(item, fallbackKeyword) {
       year: 'numeric',
     }),
     source: item.source?.name || 'Unknown source',
-    image: item.urlToImage || '/images/news-1.png',
+    image: item.urlToImage || `${IMAGE_BASE}/news-1.png`,
     url: item.url,
   }
 }

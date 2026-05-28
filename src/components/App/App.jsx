@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import HomePage from '../../pages/HomePage.jsx'
 import SavedNewsPage from '../../pages/SavedNewsPage.jsx'
 import LoginModal from '../LoginModal/LoginModal.jsx'
 import RegisterModal from '../RegisterModal/RegisterModal.jsx'
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx'
+import SuccessModal from '../SuccessModal/SuccessModal.jsx'
 import { searchNews } from '../../utils/NewsApi.js'
 import { getToken, getUserByToken, login, logout, register } from '../../utils/AuthApi.js'
 import {
@@ -11,6 +13,7 @@ import {
   getSavedArticles,
   saveArticle,
 } from '../../utils/SavedArticlesApi.js'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js'
 import './App.css'
 
 const REQUEST_ERROR_MESSAGE =
@@ -19,6 +22,7 @@ const REQUEST_ERROR_MESSAGE =
 const CARDS_PER_BATCH = 3
 
 function App() {
+  const navigate = useNavigate()
   const [activeModal, setActiveModal] = useState('')
   const [currentUser, setCurrentUser] = useState(null)
   const [savedArticles, setSavedArticles] = useState([])
@@ -79,18 +83,22 @@ function App() {
 
   const handleRegister = async (credentials) => {
     try {
-      const response = await register(credentials)
-      setCurrentUser(response.user)
-      closeModal()
+      await register(credentials)
+      setActiveModal('success')
     } catch (error) {
       setAuthError(error.message)
     }
+  }
+
+  const handleRegistrationSuccessAcknowledge = () => {
+    setActiveModal('login')
   }
 
   const handleLogout = () => {
     logout()
     setCurrentUser(null)
     setSavedArticles([])
+    navigate('/')
   }
 
   const handleToggleSave = async (article) => {
@@ -156,61 +164,73 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              onLoginClick={openLoginModal}
-              onRegisterClick={openRegisterModal}
-              onLogoutClick={handleLogout}
-              isLoggedIn={Boolean(currentUser)}
-              currentUser={currentUser}
-              savedArticles={savedArticles}
-              onToggleSave={handleToggleSave}
-              articles={articles}
-              cardsVisible={cardsVisible}
-              isLoading={isLoading}
-              hasSearched={hasSearched}
-              searchError={searchError}
-              onSearch={handleSearch}
-              onShowMore={handleShowMore}
-            />
-          }
-        />
-        <Route
-          path="/saved-news"
-          element={
-            <SavedNewsPage
-              onLoginClick={openLoginModal}
-              onRegisterClick={openRegisterModal}
-              onLogoutClick={handleLogout}
-              isLoggedIn={Boolean(currentUser)}
-              currentUser={currentUser}
-              savedArticles={savedArticles}
-              onDeleteSaved={handleDeleteSaved}
-            />
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="app">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                onLoginClick={openLoginModal}
+                onRegisterClick={openRegisterModal}
+                onLogoutClick={handleLogout}
+                isLoggedIn={Boolean(currentUser)}
+                savedArticles={savedArticles}
+                onToggleSave={handleToggleSave}
+                articles={articles}
+                cardsVisible={cardsVisible}
+                isLoading={isLoading}
+                hasSearched={hasSearched}
+                searchError={searchError}
+                onSearch={handleSearch}
+                onShowMore={handleShowMore}
+              />
+            }
+          />
+          <Route
+            path="/saved-news"
+            element={
+              <ProtectedRoute
+                isLoggedIn={Boolean(currentUser)}
+                onUnauthorized={() => {
+                  openLoginModal()
+                }}
+              >
+                <SavedNewsPage
+                  onLoginClick={openLoginModal}
+                  onRegisterClick={openRegisterModal}
+                  onLogoutClick={handleLogout}
+                  isLoggedIn={Boolean(currentUser)}
+                  savedArticles={savedArticles}
+                  onDeleteSaved={handleDeleteSaved}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
-      <LoginModal
-        isOpen={activeModal === 'login'}
-        onClose={closeModal}
-        onSwitchToRegister={openRegisterModal}
-        onSubmit={handleLogin}
-        errorMessage={authError}
-      />
-      <RegisterModal
-        isOpen={activeModal === 'register'}
-        onClose={closeModal}
-        onSwitchToLogin={openLoginModal}
-        onSubmit={handleRegister}
-        errorMessage={authError}
-      />
-    </div>
+        <LoginModal
+          isOpen={activeModal === 'login'}
+          onClose={closeModal}
+          onSwitchToRegister={openRegisterModal}
+          onSubmit={handleLogin}
+          errorMessage={authError}
+        />
+        <RegisterModal
+          isOpen={activeModal === 'register'}
+          onClose={closeModal}
+          onSwitchToLogin={openLoginModal}
+          onSubmit={handleRegister}
+          errorMessage={authError}
+        />
+        <SuccessModal
+          isOpen={activeModal === 'success'}
+          onClose={closeModal}
+          onConfirm={handleRegistrationSuccessAcknowledge}
+        />
+      </div>
+    </CurrentUserContext.Provider>
   )
 }
 

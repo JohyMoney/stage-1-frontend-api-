@@ -1,5 +1,6 @@
 import NewsCard from '../NewsCard/NewsCard.jsx'
 import Preloader from '../Preloader/Preloader.jsx'
+import stateIllustration from '../../images/State.svg'
 import './Main.css'
 
 function Main({
@@ -28,7 +29,14 @@ function Main({
       ) : isError ? (
         <p className="main__message">{errorMessage}</p>
       ) : articles.length === 0 ? (
-        <p className="main__message">{emptyMessage}</p>
+        <div className="main__empty">
+          <img
+            className="main__empty-image"
+            src={stateIllustration}
+            alt="Nothing found illustration"
+          />
+          <p className="main__message">{emptyMessage}</p>
+        </div>
       ) : (
         <>
           <div className="main__grid">

@@ -1,4 +1,6 @@
+import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js'
 import './Navigation.css'
 
 function Navigation({
@@ -6,8 +8,9 @@ function Navigation({
   onRegisterClick,
   onLogoutClick,
   isLoggedIn,
-  currentUser,
 }) {
+  const currentUser = useContext(CurrentUserContext)
+
   return (
     <nav className="navigation" aria-label="Main navigation">
       <NavLink className="navigation__logo" to="/">
