@@ -1,11 +1,11 @@
 Export image assets from Figma into this folder.
 
 Recommended file names used by the scaffold:
-- news-1.jpg
-- news-2.jpg
-- news-3.jpg
-- saved-1.jpg
-- saved-2.jpg
+- news-1.png
+- news-2.png
+- news-3.png
+- saved-1.png
+- saved-2.png
 
 How to export from Figma:
 1. Select a frame/layer in Figma.
