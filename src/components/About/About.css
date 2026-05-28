@@ -1,0 +1,38 @@
+.about {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 20px;
+  align-items: center;
+  padding-top: 28px;
+  padding-bottom: 44px;
+  border-top: 1px solid var(--border);
+}
+
+.about__photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #2f71e5, #6ba8ff);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.about__title {
+  margin: 0;
+  font-size: 30px;
+}
+
+.about__text {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  max-width: 62ch;
+}
+
+@media (max-width: 640px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+}
