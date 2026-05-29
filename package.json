@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "build:gh-pages": "cross-env VITE_BASE_PATH=/stage-1-frontend-api-/ vite build",
     "lint": "eslint .",

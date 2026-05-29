@@ -1,12 +1,12 @@
 :root {
-  --background: #f3f6f9;
+  --background: #f5f6f7;
   --surface: #ffffff;
   --text-primary: #1a1b22;
   --text-secondary: #4b5563;
   --accent: #2f71e5;
   --border: #d1d2d6;
   --container: 1232px;
-  font-family: 'Source Sans 3', 'Segoe UI', Tahoma, sans-serif;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 * {
@@ -16,7 +16,7 @@
 body {
   margin: 0;
   color: var(--text-primary);
-  background: radial-gradient(circle at 0% 0%, #f9fbff 0%, var(--background) 48%);
+  background: var(--surface);
 }
 
 a {
@@ -28,15 +28,15 @@ a {
 }
 
 .page-shell {
-  width: min(100%, var(--container));
-  margin: 0 auto;
+  width: 100%;
   background: var(--surface);
   min-height: 100vh;
-  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.08);
 }
 
 .content-section {
   padding-inline: 32px;
+  max-width: var(--container);
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
