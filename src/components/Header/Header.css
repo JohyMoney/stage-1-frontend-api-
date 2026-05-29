@@ -1,0 +1,23 @@
+.header {
+  padding-top: 20px;
+  padding-bottom: 48px;
+  background: linear-gradient(120deg, #0f376f 0%, #2f71e5 42%, #84b8ff 100%);
+  color: #ffffff;
+}
+
+.header__content {
+  max-width: 640px;
+  margin-top: 40px;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 18px;
+  opacity: 0.92;
+}
+
+.header__subtitle {
+  margin: 14px 0 0;
+  font-size: clamp(30px, 5vw, 56px);
+  line-height: 1.03;
+}
